@@ -1,6 +1,10 @@
 const $app = document.getElementById('app');
 const $observe = document.getElementById('observe');
 const API = 'https://api.escuelajs.co/api/v1/products';
+const INITIAL_PAGE = 5;
+const INCREMENT = 10;
+const LIMIT = 200;
+let load = true;
 
 const getData = api => {
   fetch(api)
@@ -8,7 +12,14 @@ const getData = api => {
     .then(response => {
       let products = response;
       let output = products.map(product => {
-        // template
+        return `
+        <article class="Card">
+          <img src="${product.images[0]}" />
+        <h2>
+          ${product.title}
+          <small>$ ${product.price}</small>
+        </h2>
+        </article>`;
       });
       let newItem = document.createElement('section');
       newItem.classList.add('Item');
@@ -29,3 +40,7 @@ const intersectionObserver = new IntersectionObserver(entries => {
 });
 
 intersectionObserver.observe($observe);
+
+const limpiarObserver = () => {
+  intersectionObserver.disconnect();
+};
